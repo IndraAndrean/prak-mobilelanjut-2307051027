@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'signup_screen.dart';
 import 'dashboard_screen.dart';
-
+import 'splash_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const route = '/signin';
@@ -26,42 +26,44 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     // komponen kecil buat label + tanda *
     Widget requiredLabel(String text) => Row(
-          children: [
-            Text(text, style: const TextStyle(fontSize: 13)),
-            const Text('*',
-                style: TextStyle(color: Colors.red, fontSize: 13)),
-          ],
-        );
+      children: [
+        Text(text, style: const TextStyle(fontSize: 13)),
+        const Text('*', style: TextStyle(color: Colors.red, fontSize: 13)),
+      ],
+    );
 
     // tombol biru dengan gradient (UI-only)
-    Widget primaryButton(String label, VoidCallback onTap) => GestureDetector(
-          onTap: onTap,
-          child: Container(
-            width: double.infinity,
-            height: 45,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(28),
-              gradient: const LinearGradient(
-                colors: [Color(0xFF1588FF), Color(0xFF2D70FF)],
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF1588FF).withOpacity(0.25),
-                  blurRadius: 18,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Text(
-              label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+    Widget primaryButton({
+      required String label,
+      required VoidCallback onTap,
+    }) => GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        height: 45,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(28),
+          gradient: const LinearGradient(
+            colors: [Color(0xFF1588FF), Color(0xFF2D70FF)],
           ),
-        );
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF1588FF).withOpacity(0.25),
+              blurRadius: 18,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Text(
+          label,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
 
     return Scaffold(
       body: SafeArea(
@@ -72,11 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Logo
-                Image.asset(
-                  'assets/logo-mola.png',
-                  height: 80,
-                  fit: BoxFit.contain,
-                ),
+                const JustduitLogo(),
                 const SizedBox(height: 18),
 
                 // Judul
@@ -146,9 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                          ),
+                          style: TextButton.styleFrom(padding: EdgeInsets.zero),
                           onPressed: () {},
                           child: const Text("Forgot Password?"),
                         ),
@@ -157,15 +153,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       // Tombol Sign In
                       primaryButton(
-                        'Sign In Now',
-                        () {
+                        label: 'Sign In Now',
+                        onTap: () {
                           // Cek apakah email atau password kosong
                           if (_email.text.isEmpty || _pass.text.isEmpty) {
                             // Jika ya, tampilkan notifikasi error
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
-                                    'Email dan Password tidak boleh kosong!'),
+                                  'Email dan Password tidak boleh kosong!',
+                                ),
                                 backgroundColor: Colors.red,
                               ),
                             );
@@ -173,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             // Jika tidak, lanjutkan ke dashboard
                             Navigator.pushNamedAndRemoveUntil(
                               context,
-                              DashboardScreen.route,
+                              SplashScreen.route,
                               (route) => false,
                             );
                           }
@@ -182,12 +179,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 14),
 
                       // Tombol Create Account
-                       Center(
+                      Center(
                         child: TextButton(
-                          onPressed: () => Navigator.pushNamed(
-                            context,
-                            SignupScreen.route,
-                          ),
+                          onPressed: () =>
+                              Navigator.pushNamed(context, SignupScreen.route),
                           child: const Text(
                             'Create New Account',
                             style: TextStyle(fontSize: 13),
@@ -203,5 +198,15 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+}
+
+// Tambahkan widget reusable JustduitLogo di sini
+class JustduitLogo extends StatelessWidget {
+  const JustduitLogo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset('assets/logo-mola.png', height: 80, fit: BoxFit.contain);
   }
 }
