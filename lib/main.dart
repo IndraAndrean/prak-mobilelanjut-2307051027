@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
 import 'screens/signup_screen.dart';
 import 'screens/dashboard_screen.dart';
+import 'screens/splash_screen.dart';
+
 
 void main() => runApp(const JustduitApp());
 
@@ -41,7 +43,8 @@ class JustduitApp extends StatelessWidget {
         '/': (context) => const LoginScreen(), // default = Sign In
         '/signin': (context) => const LoginScreen(),
         '/signup': (context) => const SignupScreen(),
-        DashboardScreen.route: (context) => const DashboardScreen(),
+        '/dashboard' : (context) => const DashboardScreen(),
+        '/splash' : (context) => const SplashScreen(),
       },
     );
   }
